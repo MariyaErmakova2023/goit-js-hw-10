@@ -36,7 +36,6 @@ function addLeadingZero({ days, hours, minutes, seconds }) {
   hours = hours.toString().padStart(2, '0');
   minutes = minutes.toString().padStart(2, '0');
   seconds = seconds.toString().padStart(2, '0');
-  console.log({ days, hours, minutes, seconds });
   return { days, hours, minutes, seconds };
 }
 
@@ -47,7 +46,7 @@ const refs = {
   timerMinutes: document.querySelector('[data-minutes]'),
   timerSeconds: document.querySelector('[data-seconds]'),
 };
-
+refs.startBtn.disabled = true;
 flatpickr('#datetime-picker', {
   enableTime: true,
   dateFormat: 'Y-m-d H:i',
@@ -56,7 +55,6 @@ flatpickr('#datetime-picker', {
   minuteIncrement: 1,
   onClose(selectedDates) {
     if (selectedDates[0] <= Date.now()) {
-      refs.startBtn.disabled = true;
       iziToast.show({
         position: 'topRight',
         title: 'Error',
