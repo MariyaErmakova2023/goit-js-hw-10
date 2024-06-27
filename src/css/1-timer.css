@@ -33,13 +33,13 @@ padding: 8px 16px;
 width: 75px;
 height: 40px;
 border: none;
-background: #4e75ff;
+background: #4e75ff; 
 }
 
 button:hover{
   background: #6c8cff;
 }
-button :disabled{
+button:disabled{
   background: #cfcfcf;
   color: #989898;
 }

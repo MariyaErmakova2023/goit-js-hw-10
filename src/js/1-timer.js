@@ -1,8 +1,11 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
+
 let intervalId;
-let initTime;
+let userSelectedDate;
 
 /*============================================================= */
 function convertMs(ms) {
@@ -14,7 +17,7 @@ function convertMs(ms) {
 
   // Remaining days
   const days = Math.floor(ms / day);
-  // Remaining hours
+  // Remaining hoursnpm i
   const hours = Math.floor((ms % day) / hour);
   // Remaining minutes
   const minutes = Math.floor(((ms % day) % hour) / minute);
@@ -28,6 +31,22 @@ function convertMs(ms) {
 // console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
 // console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
 /*============================================================= */
+function addLeadingZero({ days, hours, minutes, seconds }) {
+  days = days.toString().padStart(2, '0');
+  hours = hours.toString().padStart(2, '0');
+  minutes = minutes.toString().padStart(2, '0');
+  seconds = seconds.toString().padStart(2, '0');
+  console.log({ days, hours, minutes, seconds });
+  return { days, hours, minutes, seconds };
+}
+
+const refs = {
+  startBtn: document.querySelector('[data-start]'),
+  timerDays: document.querySelector('[data-days]'),
+  timerHours: document.querySelector('[data-hours]'),
+  timerMinutes: document.querySelector('[data-minutes]'),
+  timerSeconds: document.querySelector('[data-seconds]'),
+};
 
 flatpickr('#datetime-picker', {
   enableTime: true,
@@ -36,13 +55,38 @@ flatpickr('#datetime-picker', {
   time_24hr: true,
   minuteIncrement: 1,
   onClose(selectedDates) {
-    console.log(selectedDates[0]);
+    if (selectedDates[0] <= Date.now()) {
+      refs.startBtn.disabled = true;
+      iziToast.show({
+        position: 'topRight',
+        title: 'Error',
+        message: 'Please choose a date in the future',
+      });
+    } else {
+      const userDate = selectedDates[0];
+      userSelectedDate = userDate;
+      refs.startBtn.disabled = false;
+    }
   },
 });
-const refs = {
-  startBtn: document.querySelector('[data-start]'),
-  timerDays: document.querySelector('[data-days]'),
-  timerHours: document.querySelector('[data-hours]'),
-  timerMinutes: document.querySelector('[data-minutes]'),
-  timerSeconds: document.querySelector('[data-seconds]'),
-};
+
+refs.startBtn.addEventListener('click', () => {
+  intervalId = setInterval(() => {
+    refs.startBtn.disabled = true;
+    const currentTime = Date.now();
+    const diff = userSelectedDate - currentTime;
+    const time = convertMs(diff);
+    const str = addLeadingZero(time);
+
+    refs.timerDays.textContent = str.days;
+    refs.timerHours.textContent = str.hours;
+    refs.timerMinutes.textContent = str.minutes;
+    refs.timerSeconds.textContent = str.seconds;
+  }, 1000);
+
+  setTimeout(() => {
+    clearInterval(intervalId);
+  }, userSelectedDate - Date.now());
+
+  refs.startBtn.disabled = false;
+});
