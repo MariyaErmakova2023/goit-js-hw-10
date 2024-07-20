@@ -45,8 +45,11 @@ const refs = {
   timerHours: document.querySelector('[data-hours]'),
   timerMinutes: document.querySelector('[data-minutes]'),
   timerSeconds: document.querySelector('[data-seconds]'),
+  dataInput: document.querySelector('#datetime-picker'),
 };
+
 refs.startBtn.disabled = true;
+
 flatpickr('#datetime-picker', {
   enableTime: true,
   dateFormat: 'Y-m-d H:i',
@@ -66,18 +69,29 @@ flatpickr('#datetime-picker', {
         message: 'Please choose a date in the future',
       });
     } else {
-      const userDate = selectedDates[0];
-      userSelectedDate = userDate;
+      userSelectedDate = selectedDates[0];
       refs.startBtn.disabled = false;
     }
   },
 });
 
 refs.startBtn.addEventListener('click', () => {
+  refs.startBtn.disabled = true;
+  refs.dataInput.disabled = true;
+
   intervalId = setInterval(() => {
-    refs.startBtn.disabled = true;
+    // refs.startBtn.disabled = true;
+    // refs.dataInput.disabled = true;
     const currentTime = Date.now();
     const diff = userSelectedDate - currentTime;
+
+    if (diff <= 0) {
+      clearInterval(intervalId);
+      refs.startBtn.disabled = true;
+      refs.dataInput.disabled = false;
+      return;
+    }
+
     const time = convertMs(diff);
     const str = addLeadingZero(time);
 
@@ -87,9 +101,9 @@ refs.startBtn.addEventListener('click', () => {
     refs.timerSeconds.textContent = str.seconds;
   }, 1000);
 
-  setTimeout(() => {
-    clearInterval(intervalId);
-  }, userSelectedDate - Date.now());
+  // setTimeout(() => {
+  //   clearInterval(intervalId);
+  // }, userSelectedDate - Date.now());
 
-  refs.startBtn.disabled = false;
+  // refs.startBtn.disabled = true;
 });

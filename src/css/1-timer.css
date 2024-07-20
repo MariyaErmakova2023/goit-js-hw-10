@@ -1,45 +1,48 @@
 body {
-	font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   width: 1440px;
-height: 496px;
-background: #fff;
-
+  height: 496px;
+  background: #fff;
 }
 #datetime-picker {
   border: 1px solid #808080;
   border-radius: 4px;
   width: 272px;
   height: 40px;
-  font: 400 16px / 1.5 "Montserrat", sans-serif;
+  font: 400 16px / 1.5 'Montserrat', sans-serif;
   letter-spacing: 0.04em;
   color: #2e2f42;
   padding-left: 16px;
 }
-#datetime-picker:hover{
+#datetime-picker:hover {
   border: 1px solid #000;
 }
 
-#datetime-picker :active{
-border-radius: 4px;
-width: 272px;
-height: 40px;
-}
-button{
-font: 500 16px / 1.5 "Montserrat", sans-serif;
-letter-spacing: 0.04em;
-color: #fff;
-border-radius: 8px;
-padding: 8px 16px;
-width: 75px;
-height: 40px;
-border: none;
-background: #4e75ff; 
+#datetime-picker:active {
+  border-radius: 4px;
+  width: 272px;
+  height: 40px;
 }
 
-button:hover{
+#datetime-picker:disabled {
+  color: #808080;
+}
+button {
+  font: 500 16px / 1.5 'Montserrat', sans-serif;
+  letter-spacing: 0.04em;
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 16px;
+  width: 75px;
+  height: 40px;
+  border: none;
+  background: #4e75ff;
+}
+
+button:hover {
   background: #6c8cff;
 }
-button:disabled{
+button:disabled {
   background: #cfcfcf;
   color: #989898;
 }
@@ -54,7 +57,7 @@ button:disabled{
   height: 72px;
 }
 .field {
-  display: flex;mon
+  display: flex;
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
